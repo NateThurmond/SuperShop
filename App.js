@@ -102,7 +102,7 @@ class LoginBox extends React.Component {
   }
   render() {
     return (
-      <View style={{flex:1,width: '80%', maxWidth:250, justifyContent: 'space-between'}}>
+      <View style={{flex:1,width: '80%', maxWidth:'40%', justifyContent: 'space-between'}}>
         <View style={{alignItems:'center',height:'40%',justifyContent: 'center'}}>
           <Image source={require('./images/SuperShop.png')} style={{}}/>
         </View>
