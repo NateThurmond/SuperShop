@@ -11,7 +11,9 @@ import {
   Text,
   View,
   TextInput,
-  Button
+  Button,
+  AsyncStorage,
+  Image
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -23,16 +25,57 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loggedIn:false,
+      userName:'',
+      groupNumber:''
+    }
+
+    // THIS IS FOR TESTING TO REMOVE ASYNC STORAGE (SHOW LOGIN PAGE) UNTIL I SETUP LOGOUT FUNCTIONALITY
+    AsyncStorage.removeItem('userName');
+
+    AsyncStorage.getItem('userName').then((userNameStr)=>{
+      if (userNameStr != null) {
+        const userName = JSON.parse(userNameStr);
+        this.setState({
+          userName:userName.userName,
+          loggedIn:true
+        });
+      }
+    });
+  }
+  signIn(userName, pass) {
+    var obj = this;
+
+    // Do database check, get group number - TODO
+
+    AsyncStorage.setItem("userName", JSON.stringify({'userName':userName}));
+
+    obj.setState({
+      userName:userName,
+      loggedIn:true
+    });
+  }
+  signUp(userName, pass) {
+
+    // Do database check, get group number - TODO
+    // Set async storage and refresh state
+
+    alert(userName + " " + pass);
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to Supershop click below to sign up
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <LoginBox />
+        {/*<Text style={styles.instructions}>{instructions}</Text>*/}
+        {!this.state.loggedIn && 
+          <LoginBox signIn={this.signIn.bind(this)} signUp={this.signUp.bind(this)} userName={this.state.userName}/>
+        }
+        {this.state.loggedIn && 
+          <Text>Welcome {this.state.userName}</Text>
+        }
       </View>
     );
   }
@@ -57,16 +100,13 @@ class LoginBox extends React.Component {
       userPass:value
     });
   }
-  signIn() {
-    alert(this.state.userName + " " + this.state.userPass);
-  }
-  signUp() {
-    alert(this.state.userName + " " + this.state.userPass);
-  }
   render() {
     return (
       <View style={{flex:1,width: '80%', maxWidth:250, justifyContent: 'space-between'}}>
-        <View style={{}}>
+        <View style={{alignItems:'center',height:'40%',justifyContent: 'center'}}>
+          <Image source={require('./images/SuperShop.png')} style={{}}/>
+        </View>
+        <View>
           <TextInput {...this.props} editable={true} maxLength={40} 
             placeholder={"Username"} value={this.state.userName} 
             onChangeText={(text) => this.changeUserName(text)} />
@@ -77,14 +117,14 @@ class LoginBox extends React.Component {
         <View style={{maxHeight:'30%', flex:1, flexDirection:'row', justifyContent: 'space-between'}}>
           <View style={{width: 100, height: 50}} >
             <Button
-              onPress={() => this.signIn()}
+              onPress={() => this.props.signIn(this.state.userName, this.state.userPass)}
               title="Sign In"
               color="#3399ff"
               accessibilityLabel="Sign In"/>
           </View>
           <View style={{width: 100, height: 50}} >
             <Button
-              onPress={() => this.signUp()}
+              onPress={() => this.props.signUp(this.state.userName, this.state.userPass)}
               title="Sign Up"
               color="#3399ff"
               accessibilityLabel="Sign Up"/>
