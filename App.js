@@ -1,6 +1,6 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * SuperShop sample react-native application
+ * https://github.com/NateThurmond/SuperShop
  * @flow
  */
 
@@ -9,7 +9,9 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  TextInput,
+  Button
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -25,14 +27,69 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
+          Welcome to Supershop click below to sign up
         </Text>
         <Text style={styles.instructions}>
           {instructions}
         </Text>
+        <LoginBox />
+      </View>
+    );
+  }
+}
+
+class LoginBox extends React.Component {
+  constructor(props) {
+    super(props); // Will allow accessing props within constructor, may not be needed
+
+    this.state = {
+      userName:'',
+      userPass:''
+    };
+  }
+  changeUserName(value) {
+    this.setState({
+      userName:value
+    });
+  }
+  changeUserPass(value) {
+    this.setState({
+      userPass:value
+    });
+  }
+  signIn() {
+    alert(this.state.userName + " " + this.state.userPass);
+  }
+  signUp() {
+    alert(this.state.userName + " " + this.state.userPass);
+  }
+  render() {
+    return (
+      <View style={{flex:1,width: '80%', maxWidth:250, justifyContent: 'space-between'}}>
+        <View style={{}}>
+          <TextInput {...this.props} editable={true} maxLength={40} 
+            placeholder={"Username"} value={this.state.userName} 
+            onChangeText={(text) => this.changeUserName(text)} />
+          <TextInput {...this.props} editable={true} maxLength={40} 
+            placeholder={"Password"} value={this.state.userPass} 
+            onChangeText={(text) => this.changeUserPass(text)} secureTextEntry={true} />
+        </View>
+        <View style={{maxHeight:'30%', flex:1, flexDirection:'row', justifyContent: 'space-between'}}>
+          <View style={{width: 100, height: 50}} >
+            <Button
+              onPress={() => this.signIn()}
+              title="Sign In"
+              color="#3399ff"
+              accessibilityLabel="Sign In"/>
+          </View>
+          <View style={{width: 100, height: 50}} >
+            <Button
+              onPress={() => this.signUp()}
+              title="Sign Up"
+              color="#3399ff"
+              accessibilityLabel="Sign Up"/>
+          </View>
+        </View>
       </View>
     );
   }
