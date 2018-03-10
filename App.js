@@ -15,6 +15,18 @@ import {
   AsyncStorage,
   Image
 } from 'react-native';
+import { COLOR, ThemeProvider, Toolbar } from 'react-native-material-ui';
+
+const uiTheme = {
+  palette: {
+      primaryColor: COLOR.blue600,
+  },
+  toolbar: {
+      container: {
+          height: 50,
+      },
+  },
+};
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -23,8 +35,7 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
@@ -68,15 +79,45 @@ export default class App extends Component<Props> {
   }
   render() {
     return (
-      <View style={styles.container}>
-        {/*<Text style={styles.instructions}>{instructions}</Text>*/}
-        {!this.state.loggedIn && 
-          <LoginBox signIn={this.signIn.bind(this)} signUp={this.signUp.bind(this)} userName={this.state.userName}/>
-        }
-        {this.state.loggedIn && 
-          <Text>Welcome {this.state.userName}</Text>
-        }
-      </View>
+      <ThemeProvider uiTheme={uiTheme}>
+        <View style={styles.container}>
+
+          <MenuBarNotLoggedIn />
+
+          {/*<Text style={styles.instructions}>{instructions}</Text>*/}
+
+          {!this.state.loggedIn && 
+            <LoginBox signIn={this.signIn.bind(this)} signUp={this.signUp.bind(this)} userName={this.state.userName}/>
+          }
+          {this.state.loggedIn && 
+            <Text>Welcome {this.state.userName}</Text>
+          }
+        </View>
+      </ThemeProvider>
+    );
+  }
+}
+
+/*
+  MAY ADD SEARCHABLE MENU BAR SELECTION BACK IN LATER
+
+      return (
+      <Toolbar
+        leftElement="home"
+        rightElement="menu"
+        centerElement="Searchable"
+        searchable={{
+          autoFocus: true,
+          placeholder: 'Search'}}/>
+    );
+*/
+
+class MenuBarNotLoggedIn extends React.Component {
+  render() {
+    return (
+      <Toolbar
+        leftElement="home"
+        rightElement="menu" />
     );
   }
 }
@@ -107,22 +148,22 @@ class LoginBox extends React.Component {
           <Image source={require('./images/SuperShop.png')} style={{}}/>
         </View>
         <View>
-          <TextInput {...this.props} editable={true} maxLength={40} 
+          <TextInput style={{fontSize:20}} {...this.props} editable={true} maxLength={40} 
             placeholder={"Username"} value={this.state.userName} 
             onChangeText={(text) => this.changeUserName(text)} />
-          <TextInput {...this.props} editable={true} maxLength={40} 
+          <TextInput style={{fontSize:20}} {...this.props} editable={true} maxLength={40} 
             placeholder={"Password"} value={this.state.userPass} 
             onChangeText={(text) => this.changeUserPass(text)} secureTextEntry={true} />
         </View>
         <View style={{maxHeight:'30%', flex:1, flexDirection:'row', justifyContent: 'space-between'}}>
-          <View style={{width: 100, height: 50}} >
+          <View style={{width: 75, height: 50}} >
             <Button
               onPress={() => this.props.signIn(this.state.userName, this.state.userPass)}
               title="Sign In"
               color="#3399ff"
               accessibilityLabel="Sign In"/>
           </View>
-          <View style={{width: 100, height: 50}} >
+          <View style={{width: 75, height: 50}} >
             <Button
               onPress={() => this.props.signUp(this.state.userName, this.state.userPass)}
               title="Sign Up"
@@ -138,7 +179,7 @@ class LoginBox extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
