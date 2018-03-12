@@ -113,11 +113,31 @@ export default class App extends Component {
 */
 
 class MenuBarNotLoggedIn extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.homeButtonClick = this.homeButtonClick.bind(this);
+    this.optionsSelect = this.optionsSelect.bind(this);
+  }
+  homeButtonClick() {
+    alert('You clicked the home button');
+  }
+  optionsSelect(event) {
+    if (event.index === 0) {
+      alert('You clicked Item 1');
+    } else if (event.index === 1) {
+      alert('You clicked Item 2');
+    }
+  }
   render() {
     return (
       <Toolbar
         leftElement="home"
-        rightElement="menu" />
+        onLeftElementPress={() => this.homeButtonClick()}
+        onRightElementPress={(event) => this.optionsSelect(event)}
+        rightElement={{
+          menu: { labels: ['Item 1', 'Item 2'] },
+        }} />
     );
   }
 }
