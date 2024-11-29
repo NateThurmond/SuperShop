@@ -8,7 +8,7 @@ I have made React-Native projects before as hybrid apps but I wanted to test wha
 
 ## Demo: User Flow
 
-<img src="assets/vids/demoUse.min.gif" width="450" />
+<img src="assets/vids/demoUse.min.gif" width="300" />
 
 ## Prerequisites
 
