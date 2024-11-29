@@ -35,10 +35,17 @@ export default class App extends Component {
     AsyncStorage.getItem('userName').then(userNameStr => {
       if (userNameStr != null) {
         const userName = JSON.parse(userNameStr);
-        this.setState({
-          userName: userName.userName,
-          loggedIn: true,
-        });
+        // Ensure that 'userName' is not null before accessing its properties
+        if (userName && userName.userName) {
+          this.setState({
+            userName: userName.userName,
+            loggedIn: true,
+          });
+        } else {
+          console.log('User data is invalid or missing userName property');
+        }
+      } else {
+        console.log('No user data found in AsyncStorage');
       }
     });
   }
@@ -67,7 +74,7 @@ export default class App extends Component {
               userName={this.state.userName}
             />
           )}
-          {this.state.loggedIn && <Text>Welcome {this.state.userName}</Text>}
+          {this.state.loggedIn && <Text>Welcome {this.state.userName || 'Guest'}</Text>}
         </View>
       </ThemeProvider>
     );
@@ -79,11 +86,15 @@ class MenuBarNotLoggedIn extends React.Component {
     alert('You clicked the home button');
   };
 
-  optionsSelect = event => {
-    if (event.index === 0) {
-      alert('You clicked Item 1');
-    } else if (event.index === 1) {
-      alert('You clicked Item 2');
+  optionsSelect = (event) => {
+    if (event && event.index !== undefined) {
+      if (event.index === 0) {
+        alert('You clicked Item 1');
+      } else if (event.index === 1) {
+        alert('You clicked Item 2');
+      }
+    } else {
+      console.log('Event object is invalid:', event);
     }
   };
 
@@ -149,7 +160,7 @@ class LoginBox extends React.Component {
             editable={true}
             maxLength={40}
             placeholder={'Username'}
-            value={this.state.userName}
+            value={this.state.userName || ''}
             onChangeText={text => this.changeUserName(text)}
           />
           <TextInput
@@ -158,7 +169,7 @@ class LoginBox extends React.Component {
             editable={true}
             maxLength={40}
             placeholder={'Password'}
-            value={this.state.userPass}
+            value={this.state.userPass || ''}
             onChangeText={text => this.changeUserPass(text)}
             secureTextEntry={true}
           />
