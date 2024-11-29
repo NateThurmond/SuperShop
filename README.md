@@ -6,9 +6,9 @@ Point of Service React-Native app to allow additions to online shopping cart
 
 I have made React-Native projects before as hybrid apps but I wanted to test what a full client implementation might look like
 
-<!-- ## Getting Started -->
+## Demo: User Flow
 
-<!-- <img src="vids/demoUse.min.gif" width="450" /> -->
+<img src="assets/vids/demoUse.min.gif" width="450" />
 
 ## Prerequisites
 
