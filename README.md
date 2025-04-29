@@ -76,7 +76,7 @@ Make sure that Android Studio and an Android Emulator are properly set up.
 
 -   0.2
     -   Update to latest react-native version and updated Readme
-    -   See [commit change]() or See [release history]()
+    -   See [commit change](https://github.com/NateThurmond/SuperShop/commits/master/) or See [release history](https://github.com/NateThurmond/SuperShop/releases)
 -   0.1
     -   Initial Release
 
